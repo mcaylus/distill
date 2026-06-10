@@ -1,10 +1,12 @@
 import SwiftUI
+import SwiftData
 
 @main
-struct AppDefinition: App {
+struct DistillApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
     }
+    .modelContainer(for: JournalEntry.self)
   }
 }
