@@ -75,8 +75,8 @@ struct ContentView: View {
     context.insert(entry)
     try? context.save()
     showingComposer = false
+    // Navigate straight to the Reveal screen, which runs analysis on appear.
     path.append(entry)
-    Task { await analyzer.process(entry, in: context) }
   }
 
   private func delete(_ offsets: IndexSet) {

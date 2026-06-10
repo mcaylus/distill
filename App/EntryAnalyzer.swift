@@ -1,6 +1,5 @@
 import Foundation
 import FoundationModels
-import SwiftData
 
 /// Runs Apple's on-device language model to analyze journal entries.
 /// All work happens locally; nothing leaves the device.
@@ -56,21 +55,5 @@ final class EntryAnalyzer {
     let session = makeSession()
     let response = try await session.respond(to: text, generating: EntryAnalysis.self)
     return response.content
-  }
-
-  /// Analyzes an entry and writes the results back into it, saving the context.
-  /// Does nothing (leaving the entry unanalyzed) if the model is unavailable or generation fails.
-  func process(_ entry: JournalEntry, in context: ModelContext) async {
-    guard isAvailable else { return }
-    do {
-      let analysis = try await analyze(entry.text)
-      entry.moodScore = analysis.moodScore
-      entry.moodLabel = analysis.moodLabel
-      entry.themes = analysis.themes
-      entry.actionItems = analysis.actionItems
-      try? context.save()
-    } catch {
-      // Leave the entry unanalyzed; the timeline shows a gray, neutral state.
-    }
   }
 }
